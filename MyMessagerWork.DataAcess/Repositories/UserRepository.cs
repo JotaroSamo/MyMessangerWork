@@ -32,14 +32,23 @@ namespace MyMessagerWork.DataAcess.Repositories
         }
         public async Task<Guid> UpdateById(User entity)
         {
+            var chatentity = entity.Chats.Select(b=>new ChatEntity() { 
+                Id = b.Id,
+                Name= b.Name,
+                PictureChatPath = b.PictureChatPath,
+                CreatedAt= b.CreatedAt,
+                UpdatedAt= b.UpdatedAt,
+                Hub = b.Hub
 
+
+            }).ToList();
             await _messagerDbContext.Users.Where(i => i.Id == entity.Id)
                 .ExecuteUpdateAsync(s => s
                 .SetProperty(b => b.Name, b => entity.Name)
                 .SetProperty(b => b.Email, b => entity.Email)
                 .SetProperty(b => b.HashPassword, b => entity.HashPassword)
                 .SetProperty(b=>b.PictureUserPath, b=>entity.PictureUserPath)
-                .SetProperty(b=>b.Chats, b=>entity.Chats)
+                .SetProperty(b=>b.ChatUsers, b=>chatentity)
                 );
             return entity.Id;
         }

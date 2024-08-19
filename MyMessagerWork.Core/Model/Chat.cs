@@ -11,13 +11,15 @@ namespace MyMessagerWork.Core.Model
     {
         public const int MAX_LENGHT_NAME = 250;
         private Chat(Guid id, string name,
-            string hub, ICollection<User> users,
+            string hub, ICollection<User> users,DateTime createAt,DateTime updateAt,
             ICollection<Message> messages = default, string? pictureChatPath = default)
         {
 
             Id = id;
             Name = name;
             Hub = hub;
+            CreatedAt = createAt;
+            UpdatedAt = updateAt;
             Users = users;
             Messages = messages;
             PictureChatPath = pictureChatPath;
@@ -28,10 +30,12 @@ namespace MyMessagerWork.Core.Model
         public string Hub { get; }
         public ICollection<User> Users { get; }
         public ICollection<Message> Messages { get; }
+        public DateTime CreatedAt { get; }
+        public DateTime UpdatedAt { get; }
         public static Result<Chat> Create(Guid id,
             string name,
             string hub,
-            ICollection<User> users,
+            ICollection<User> users, DateTime createAt, DateTime updateAt,
             ICollection<Message> messages = default, string? pictureChatPath = default)
         {
             if (string.IsNullOrEmpty(name) || name.Length > 250)
@@ -46,17 +50,17 @@ namespace MyMessagerWork.Core.Model
             {
                 return Result.Failure<Chat>($"USERS IS NULL");
             }
-            var chat = new Chat(id, name, hub, users,messages, pictureChatPath);
+            var chat = new Chat(id, name, hub, users,createAt,updateAt,messages, pictureChatPath);
             return Result.Success<Chat>(chat);
         }
         public static Chat Mapper(Guid id,
             string name,
             string hub,
-            ICollection<User> users,
+            ICollection<User> users, DateTime createAt, DateTime updateAt, 
             ICollection<Message> messages = default, string? pictureChatPath = default)
 
         {
-            var chat = new Chat(id, name, hub, users,messages, pictureChatPath);
+            var chat = new Chat(id, name, hub, users,createAt, updateAt,messages, pictureChatPath);
             return chat;
         }
     }
