@@ -36,7 +36,7 @@ namespace MyMessagerWork.DataAcess.Repositories
                 .SetProperty(b => b.Name, b => entity.Name)
                 .SetProperty(b => b.Email, b => entity.Email)
                 .SetProperty(b => b.HashPassword, b => entity.HashPassword)
-                .SetProperty(b=>b.Picture, b=>entity.Picture)
+                .SetProperty(b=>b.PictureUserPath, b=>entity.PictureUserPath)
                 .SetProperty(b=>b.Chats, b=>entity.Chats)
                 );
             return entity.Id;

@@ -19,13 +19,11 @@ namespace MyMessagerWork.DataAcess.Repositories
         public async Task<Guid> AddAsync(MessageEntity entity)
         {
             await _messagerDbContext.Messages.AddAsync(entity);
+            await _messagerDbContext.SaveChangesAsync();
             return entity.Id;
         }
 
-        public Task<IQueryable<MessageEntity>> AsQueryable()
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<IQueryable<MessageEntity>> AsQueryable() =>  _messagerDbContext.Messages.AsQueryable();
 
         public async Task<Guid> DeleteById(Guid id)
         {

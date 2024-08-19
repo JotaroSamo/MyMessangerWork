@@ -1,4 +1,5 @@
-﻿using MyMessagerWork.DataAcess.Entity;
+﻿using Microsoft.EntityFrameworkCore;
+using MyMessagerWork.DataAcess.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,29 +10,35 @@ namespace MyMessagerWork.DataAcess.Repositories
 {
     public class ChatRepository : IRepository<ChatEntity>
     {
-        public Task<Guid> AddAsync(ChatEntity entity)
+        private readonly MessagerDbContext _messagerDbContext;
+
+        public ChatRepository(MessagerDbContext messagerDbContext)
         {
-            throw new NotImplementedException();
+           _messagerDbContext = messagerDbContext;
+        }
+        public async Task<Guid> AddAsync(ChatEntity entity)
+        {
+            await _messagerDbContext.Chats.AddAsync(entity);
+            await _messagerDbContext.SaveChangesAsync();
+            return entity.Id;
         }
 
-        public Task<IQueryable<ChatEntity>> AsQueryable()
+        public async Task<IQueryable<ChatEntity>> AsQueryable() => _messagerDbContext.Chats.AsQueryable();
+
+        public async Task<Guid> DeleteById(Guid id)
         {
-            throw new NotImplementedException();
+            await _messagerDbContext.Chats.Where(i=>i.Id==id).ExecuteDeleteAsync();
+            return id;
         }
 
-        public Task<Guid> DeleteById(Guid id)
+        public async Task<List<ChatEntity>> GetAllListAsync()
         {
-            throw new NotImplementedException();
+           return await _messagerDbContext.Chats.Include(u=>u.Users).Include(m=>m.Messages).ThenInclude(u=>u.User).ToListAsync();
         }
 
-        public Task<List<ChatEntity>> GetAllListAsync()
+        public async Task<ChatEntity> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<ChatEntity> GetByIdAsync(Guid id)
-        {
-            throw new NotImplementedException();
+            return await _messagerDbContext.Chats.Include(u => u.Users).Include(m => m.Messages).ThenInclude(u => u.User).FirstOrDefaultAsync(i => i.Id == id);
         }
 
         public Task<Guid> UpdateById(ChatEntity entity)

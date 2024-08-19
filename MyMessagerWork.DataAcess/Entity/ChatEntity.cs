@@ -10,7 +10,7 @@ namespace MyMessagerWork.DataAcess.Entity
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public byte[]? Picture { get; set; }
+        public string? PictureChatPath { get; set; }
         public string ChatToken { get; set; }
         public IEnumerable<UserEntity> Users { get; set; } 
         public IEnumerable<MessageEntity> Messages { get; set; }

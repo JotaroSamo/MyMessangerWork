@@ -12,7 +12,7 @@ namespace MyMessagerWork.DataAcess.Entity
     
         public string Name { get; set; }
         public string Email { get; set; }
-        public byte[]? Picture { get; set; }
+        public string? PictureUserPath { get; set; }
         public IEnumerable<ChatEntity> Chats { get; set; }
         public string HashPassword { get; set; } 
     }
