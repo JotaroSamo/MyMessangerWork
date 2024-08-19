@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MyMessagerWork.Core.Model;
 using MyMessagerWork.DataAcess.Entity;
 
 namespace MyMessagerWork.DataAcess.Repositories
 {
-    public class UserRepository : IRepository<UserEntity>
+    public class UserRepository : IRepository<User>
     {
         private readonly MessagerDbContext _messagerDbContext;
 
@@ -16,19 +17,20 @@ namespace MyMessagerWork.DataAcess.Repositories
         {
             return await _messagerDbContext.Users.Include(c => c.Chats).ToListAsync();
         }
-        public async Task<UserEntity> GetByIdAsync(Guid id)
+        public async Task<User> GetByIdAsync(Guid id)
         {
-            return await _messagerDbContext.Users.
-                Include(c=>c.Chats).
-                FirstOrDefaultAsync(i=>i.Id == id);
+            //return await _messagerDbContext.Users.
+            //    Include(c=>c.Chats).
+            //    FirstOrDefaultAsync(i=>i.Id == id);
         }
-        public async Task<Guid> AddAsync(UserEntity entity)
+        public async Task<Guid> AddAsync(User entity)
         {
+            var user = 
             await _messagerDbContext.AddAsync(entity);
             await _messagerDbContext.SaveChangesAsync();
             return entity.Id;
         }
-        public async Task<Guid> UpdateById(UserEntity entity)
+        public async Task<Guid> UpdateById(User entity)
         {
 
             await _messagerDbContext.Users.Where(i => i.Id == entity.Id)
@@ -48,9 +50,11 @@ namespace MyMessagerWork.DataAcess.Repositories
             return id;
         }
 
-        public async Task<IQueryable<UserEntity>> AsQueryable()
+        public async Task<IQueryable<User>> AsQueryable()
         {
-            return _messagerDbContext.Users.AsQueryable();
+            var userEntity = _messagerDbContext.Users.AsQueryable();
+            var user = userEntity.Select(s =>User.Mapper(s.Id, s.Name, s.Email, s.HashPassword, s.PictureUserPath, s.Chats));
+            return user;
         }
     }
 }
