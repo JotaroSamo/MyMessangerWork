@@ -41,9 +41,15 @@ namespace MyMessagerWork.DataAcess.Repositories
             return await _messagerDbContext.Chats.Include(u => u.Users).Include(m => m.Messages).ThenInclude(u => u.User).FirstOrDefaultAsync(i => i.Id == id);
         }
 
-        public Task<Guid> UpdateById(ChatEntity entity)
+        public async Task<Guid> UpdateById(ChatEntity entity)
         {
-            throw new NotImplementedException();
+            await _messagerDbContext.Chats.ExecuteUpdateAsync(s=>s
+            .SetProperty(b=>b.Id, b=>entity.Id)
+            .SetProperty(b => b.Name, b => entity.Name)
+            .SetProperty(b => b.PictureChatPath, b => entity.PictureChatPath)
+            .SetProperty(b => b.Users, b => entity.Users)
+            .SetProperty(b => b.Messages, b => entity.Messages));
+            return entity.Id;
         }
     }
 }

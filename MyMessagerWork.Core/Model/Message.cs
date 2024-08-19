@@ -9,11 +9,12 @@ namespace MyMessagerWork.Core.Model
 {
    public class Message
     {
-        public Guid Id { get; set; }
-        public DateTime DateCreated { get; set; }
-        public MessageType MessageType { get; set; }
-        public string? Text { get; set; }
-        public User User { get; set; }
-        public Chat Chat { get; set; }
+        public Guid Id { get; }
+        public DateTime DateCreated { get;}
+        public MessageType MessageType { get;}
+        public string? Text { get; }
+        public User User { get; }
+        public Chat Chat { get; }
+    
     }
 }
