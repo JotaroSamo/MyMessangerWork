@@ -1,5 +1,4 @@
 ﻿using CSharpFunctionalExtensions;
-using MyMessagerWork.DataAcess.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +11,13 @@ namespace MyMessagerWork.Core.Model
     {
 
         private User(Guid id, string name, string email, 
-            string hashPassword, string pictureUserPatch = default, ICollection<Chat> chats = default )
+            string hashPassword, string pictureUserPatch = default, ICollection<ChatUser> chatusers = default )
         {
             Id = id; 
             Name = name; 
             Email = email;
             HashPassword = hashPassword;
-            Chats = chats;
+            ChathatUsers = chatusers;
             PictureUserPath = pictureUserPatch;
         }
         public Guid Id { get; }
@@ -26,11 +25,11 @@ namespace MyMessagerWork.Core.Model
         public string Name { get; }
         public string Email { get; }
         public string? PictureUserPath { get;  }
-        public ICollection<Chat>? Chats { get;  }
+        public ICollection<ChatUser>? ChathatUsers { get;  }
         public string HashPassword { get; }
 
         public static Result<User> Create(Guid id, string name, string email,
-            string hashPassword, string pictureUserPatch = default, ICollection<Chat> chats = default)
+            string hashPassword, string pictureUserPatch = default, ICollection<ChatUser> chatusers = default)
         {
             if (string.IsNullOrEmpty(name) || name.Length > Chat.MAX_LENGHT_NAME)
             {
@@ -41,15 +40,10 @@ namespace MyMessagerWork.Core.Model
                 Result.Failure<User>($"The {nameof(email)} is null or lenght more then 250 symbol");
 
             }
-            var user = new User(id, name, email, hashPassword, pictureUserPatch, chats);
+            var user = new User(id, name, email, hashPassword, pictureUserPatch, chatusers);
             return Result.Success<User>(user);
 
         }
-        public static User Mapper(Guid id, string name, string email,
-            string hashPassword, string pictureUserPatch = default, ICollection<Chat> chats = default)
-        {
-            var user = new User(id, name, email, hashPassword, pictureUserPatch, chats);
-            return user;
-        }
+      
     }
 }

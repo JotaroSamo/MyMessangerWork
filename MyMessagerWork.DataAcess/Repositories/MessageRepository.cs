@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyMessagerWork.DataAcess.Repositories
 {
-    public class MessageRepository : IRepository<MessageEntity>
+    public class MessageRepository 
     {
         private readonly MessagerDbContext _messagerDbContext;
 
@@ -16,39 +16,6 @@ namespace MyMessagerWork.DataAcess.Repositories
         {
             _messagerDbContext = messagerDbContext;
         }
-        public async Task<Guid> AddAsync(MessageEntity entity)
-        {
-            await _messagerDbContext.Messages.AddAsync(entity);
-            await _messagerDbContext.SaveChangesAsync();
-            return entity.Id;
-        }
-
-        public async Task<IQueryable<MessageEntity>> AsQueryable() =>  _messagerDbContext.Messages.AsQueryable();
-
-        public async Task<Guid> DeleteById(Guid id)
-        {
-            await _messagerDbContext.Messages.Where(i => i.Id == id).ExecuteDeleteAsync();
-            return id;
-        }
-
-        public async Task<List<MessageEntity>> GetAllListAsync()
-        {
-         return  await _messagerDbContext.Messages.ToListAsync();
-        }
-
-        public async Task<MessageEntity> GetByIdAsync(Guid id)
-        {
-            return await _messagerDbContext.Messages.FindAsync(id);
-        }
-
-        public async Task<Guid> UpdateById(MessageEntity entity)
-        {
-            await _messagerDbContext.Messages.Where(i => i.Id == entity.Id).ExecuteUpdateAsync(s => s
-            .SetProperty(b=>b.Id, b=>entity.Id)
-            .SetProperty(b=>b.DateCreated, b=>entity.DateCreated)
-            .SetProperty(b=>b.MessageType, b=>entity.MessageType)
-            .SetProperty(b=>b.Text, b=>entity.Text));
-            return entity.Id;
-        }
+   
     }
 }

@@ -53,15 +53,5 @@ namespace MyMessagerWork.Core.Model
             var chat = new Chat(id, name, hub, users,createAt,updateAt,messages, pictureChatPath);
             return Result.Success<Chat>(chat);
         }
-        public static Chat Mapper(Guid id,
-            string name,
-            string hub,
-            ICollection<User> users, DateTime createAt, DateTime updateAt, 
-            ICollection<Message> messages = default, string? pictureChatPath = default)
-
-        {
-            var chat = new Chat(id, name, hub, users,createAt, updateAt,messages, pictureChatPath);
-            return chat;
-        }
     }
 }

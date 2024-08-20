@@ -1,5 +1,4 @@
 ﻿using MyMessagerWork.Core.Model;
-using MyMessagerWork.DataAcess.Entity;
 using MyMessagerWork.DataAcess.Repositories;
 using System;
 using System.Collections.Generic;
@@ -11,15 +10,16 @@ namespace MyMessagerWork.Application.Service
 {
     public class UserService
     {
-        private readonly IRepository<UserEntity> _repository;
+        private readonly IRepositoryUser _repository;
 
-        public UserService(IRepository<UserEntity> repository )
+        public UserService(IRepositoryUser repository )
         {
             _repository = repository;
         }
         public async Task<Guid> AddUser(User entity)
         {
-            
+            await _repository.AddAsync( entity );
+            return entity.Id;
         }
     }
 }
