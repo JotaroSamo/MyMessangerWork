@@ -14,10 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\MyMessagerWork.Application\MyMessagerWork.Application.csproj" />
     <ProjectReference Include="..\MyMessagerWork.Core\MyMessagerWork.Core.csproj" />
     <ProjectReference Include="..\MyMessagerWork.DataAcess\MyMessagerWork.DataAcess.csproj" />

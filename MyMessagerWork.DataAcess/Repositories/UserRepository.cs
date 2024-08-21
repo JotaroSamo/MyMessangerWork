@@ -61,6 +61,7 @@ namespace MyMessagerWork.DataAcess.Repositories
             .SetProperty(b => b.Email, b => userEntity.Email)
             .SetProperty(b => b.PictureUserPath, b => userEntity.PictureUserPath)
             .SetProperty(b => b.HashPassword, b => userEntity.HashPassword)
+            .SetProperty(b=>b.ChatUsers, b=>entity.ChatUsers.Select(s => _mapper.Map<ChatUserEntity>(s)) )
             );
             return entity.Id;
         }
