@@ -1,12 +1,15 @@
+using Microsoft.EntityFrameworkCore;
 using MyMessagerWork.Application.Service;
 using MyMessagerWork.Core.Abstract;
+using MyMessagerWork.DataAcess;
 using MyMessagerWork.DataAcess.Mapper;
 using MyMessagerWork.DataAcess.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddDbContext<MessagerDbContext>(options =>
+              options.UseSqlite(builder.Configuration.GetConnectionString("ConnectionString")));
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(typeof(MapperCoreDB));
 builder.Services.AddEndpointsApiExplorer();
