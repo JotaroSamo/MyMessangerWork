@@ -4,7 +4,8 @@ using MyMessagerWork.Core.Abstract;
 
 namespace MyMessagerWork.Controllers
 {
-    [Controller]
+    [ApiController]
+    [Route("[controller]")]
     public class HomeController : Controller
     {
         private readonly IUserService _userService;
@@ -13,19 +14,22 @@ namespace MyMessagerWork.Controllers
         {
             _userService = userService;
         }
-        public IActionResult Index()
-        {
-            return Ok();
-        }
+        //[HttpGet]
+        //public IActionResult Index()
+        //{
+        //    return Ok();
+        //}
+        [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody]UserRequest userRequest)
         {
             var user = MyMessagerWork.Core.Model.User.Create(Guid.NewGuid(), userRequest.name, userRequest.email, userRequest.password);
-           await _userService.AddAsyncUser(user.Value);
-            return Ok();
+            await _userService.AddAsyncUser(user.Value);
+            return Ok(user.Value.Id);
         }
-        public IActionResult Login()
-        {
-            return Ok();
-        }
+        //[HttpGet]
+        //public IActionResult Login()
+        //{
+        //    return Ok();
+        //}
     }
 }

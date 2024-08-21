@@ -9,12 +9,16 @@ namespace MyMessagerWork.DataAcess.Entity
     public class ChatEntity
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string? PictureChatPath { get; set; }
-        public string Hub { get; set; }
-        public ICollection<MessageEntity> Messages { get; set; } = new List<MessageEntity>();
-        public ICollection<UserEntity> Participants { get; set; } = new List<UserEntity>();
+        public string Name { get; set; } = null!;
+        public string? PictureChatPath { get; set; } = null!;
+        public string Hub { get; set; } = null!;
+        public ICollection<MessageEntity> Messages { get; set; } = [];
+        public ICollection<UserEntity> Users { get; set; } = [];
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public ChatEntity()
+        {
+                
+        }
     }
 }
