@@ -15,9 +15,6 @@ namespace MyMessagerWork.DataAcess.Repositories
             _messagerDbContext = messagerDbContext;
             _mapper = mapper;
         }
-
-    
-
         public async Task<Guid> AddAsync(User entity)
         {
             var userEntity = _mapper.Map<UserEntity>(entity);

@@ -19,6 +19,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MyMessagerWork.Application\MyMessagerWork.Application.csproj" />
+    <ProjectReference Include="..\MyMessagerWork.Core\MyMessagerWork.Core.csproj" />
+    <ProjectReference Include="..\MyMessagerWork.DataAcess\MyMessagerWork.DataAcess.csproj" />
   </ItemGroup>
 
 </Project>

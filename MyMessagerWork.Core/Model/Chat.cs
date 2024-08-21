@@ -10,11 +10,8 @@ namespace MyMessagerWork.Core.Model
     public class Chat
     {
         public const int MAX_LENGHT_NAME = 250;
-        private Chat(Guid id, string name,
-            string hub, ICollection<User> users,DateTime createAt,DateTime updateAt,
-            ICollection<Message> messages = default, string? pictureChatPath = default)
+        private Chat(Guid id, string name, string hub, ICollection<User> users, DateTime createAt, DateTime updateAt, ICollection<Message> messages = default, string? pictureChatPath = default)
         {
-
             Id = id;
             Name = name;
             Hub = hub;
@@ -24,6 +21,7 @@ namespace MyMessagerWork.Core.Model
             Messages = messages;
             PictureChatPath = pictureChatPath;
         }
+
         public Guid Id { get; }
         public string Name { get; }
         public string? PictureChatPath { get; }
@@ -32,26 +30,23 @@ namespace MyMessagerWork.Core.Model
         public ICollection<Message> Messages { get; }
         public DateTime CreatedAt { get; }
         public DateTime UpdatedAt { get; }
-        public static Result<Chat> Create(Guid id,
-            string name,
-            string hub,
-            ICollection<User> users, DateTime createAt, DateTime updateAt,
-            ICollection<Message> messages = default, string? pictureChatPath = default)
+
+        public static Result<Chat> Create(Guid id, string name, string hub, ICollection<User> users, DateTime createAt, DateTime updateAt, ICollection<Message> messages = default, string? pictureChatPath = default)
         {
             if (string.IsNullOrEmpty(name) || name.Length > 250)
             {
-                return Result.Failure<Chat>($"Name is null or lenght name > the {MAX_LENGHT_NAME} symbols");
+                return Result.Failure<Chat>($"Name is null or length > {MAX_LENGHT_NAME} symbols");
             }
             if (string.IsNullOrEmpty(hub))
             {
-                return Result.Failure<Chat>($"HUB IS ERORR");
+                return Result.Failure<Chat>($"HUB IS ERROR");
             }
-            if (users is null)
+            if (users == null)
             {
                 return Result.Failure<Chat>($"USERS IS NULL");
             }
-            var chat = new Chat(id, name, hub, users,createAt,updateAt,messages, pictureChatPath);
-            return Result.Success<Chat>(chat);
+            var chat = new Chat(id, name, hub, users, createAt, updateAt, messages, pictureChatPath);
+            return Result.Success(chat);
         }
     }
 }

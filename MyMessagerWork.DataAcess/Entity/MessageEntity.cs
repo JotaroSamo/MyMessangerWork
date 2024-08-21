@@ -13,9 +13,8 @@ namespace MyMessagerWork.DataAcess.Entity
         public DateTime DateCreated { get; set; }
         public MessageType MessageType { get; set; }
         public string? Text { get; set; }
-        public string? MediaUrl { get; set; } // URL для изображений или видео
         public Guid UserId { get; set; }
         public Guid ChatId { get; set; }
     }
-   
+
 }

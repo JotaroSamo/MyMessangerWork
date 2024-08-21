@@ -12,10 +12,8 @@ namespace MyMessagerWork.DataAcess.Entity
         public string Name { get; set; }
         public string? PictureChatPath { get; set; }
         public string Hub { get; set; }
-
-        public ICollection<MessageEntity> Messages { get; set; } = new List<MessageEntity>(); // Изменяем на ICollection для лучшей совместимости
-        public ICollection<UserEntity> Participants { get; set; } = new List<UserEntity>(); // Участники чата
-
+        public ICollection<MessageEntity> Messages { get; set; } = new List<MessageEntity>();
+        public ICollection<UserEntity> Participants { get; set; } = new List<UserEntity>();
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

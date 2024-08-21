@@ -12,10 +12,8 @@ namespace MyMessagerWork.DataAcess.Entity
         public string Name { get; set; }
         public string Email { get; set; }
         public string? PictureUserPath { get; set; }
-
         public string HashPassword { get; set; }
-
-        public ICollection<ChatUserEntity> ChatUsers { get; set; } = new List<ChatUserEntity>(); // Связь с чатом через отдельный класс
+        public ICollection<ChatUserEntity> ChatUsers { get; set; } = new List<ChatUserEntity>();
     }
 
 }
