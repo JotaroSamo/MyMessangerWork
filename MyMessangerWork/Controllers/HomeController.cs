@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using MyMessagerWork.Contracts;
 using MyMessagerWork.Core.Abstract;
 
@@ -22,6 +23,7 @@ namespace MyMessagerWork.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody]UserRequest userRequest)
         {
+            
             //string filePath = "Deafult";
             //if (userRequest.File != null && userRequest.File.Length > 0)
             //{

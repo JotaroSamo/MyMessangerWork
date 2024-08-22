@@ -11,9 +11,9 @@ namespace MyMessagerWork.Application.Service
 {
     public class UserService: IUserService
     {
-        private readonly IRepositoryUser _repository;
+        private readonly IUserRepository _repository;
 
-        public UserService(IRepositoryUser repository )
+        public UserService(IUserRepository repository )
         {
             _repository = repository;
         }

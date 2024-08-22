@@ -2,7 +2,8 @@
 
 namespace MyMessagerWork.Contracts
 {
-    public record UserRequest(string name, string email, string password, IFormFile File)
+    public record UserRequest(string name, string email, string password)
     {
+        
     }
 }

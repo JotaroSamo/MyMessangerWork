@@ -2,7 +2,7 @@
 
 namespace MyMessagerWork.DataAcess.Repositories
 {
-    public interface IRepositoryUser
+    public interface IUserRepository
     {
         Task<Guid> AddAsync(User entity);
         Task<Guid> DeleteById(Guid id);

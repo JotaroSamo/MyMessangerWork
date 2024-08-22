@@ -15,7 +15,7 @@ builder.Services.AddAutoMapper(typeof(DomainProfile));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IRepositoryUser, UserRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
