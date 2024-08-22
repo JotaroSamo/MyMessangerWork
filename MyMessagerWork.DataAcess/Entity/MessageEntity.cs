@@ -11,14 +11,12 @@ namespace MyMessagerWork.DataAcess.Entity
     {
         public Guid Id { get; set; }
         public DateTime DateCreated { get; set; }
-        public MessageType MessageType { get; set; }
-        public string? Text { get; set; } = null!;
+        public string? Text { get; set; }
         public Guid UserId { get; set; }
+        public UserEntity User { get; set; }
         public Guid ChatId { get; set; }
-        public MessageEntity()
-        {
-                
-        }
+        public ChatEntity Chat { get; set; }
+        public ICollection<AttachmentEntity> Attachments { get; set; }
     }
 
 }

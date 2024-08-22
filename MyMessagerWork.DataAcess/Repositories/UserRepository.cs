@@ -15,6 +15,7 @@ namespace MyMessagerWork.DataAcess.Repositories
             _messagerDbContext = messagerDbContext;
             _mapper = mapper;
         }
+
         public async Task<Guid> AddAsync(User entity)
         {
             var userEntity = _mapper.Map<UserEntity>(entity);
@@ -23,28 +24,31 @@ namespace MyMessagerWork.DataAcess.Repositories
             return entity.Id;
         }
 
-        //public Task<IQueryable<User>> AsQueryable()
-        //{
-        //    var userEntity = _messagerDbContext.Users.AsQueryable();
-        //    return _mapper.Map<IQueryable<User>>(userEntity);
-        //}
-
         public async Task<Guid> DeleteById(Guid id)
         {
-            await _messagerDbContext.Users.Where(i=>i.Id==id).ExecuteDeleteAsync();
+            await _messagerDbContext.Users.Where(i => i.Id == id).ExecuteDeleteAsync();
             return id;
         }
 
         public async Task<List<User>> GetAllListAsync()
         {
-            var userEntyti = await _messagerDbContext.Users.Include(c => c.ChatUsers).ToListAsync();
-            return _mapper.Map<List<User>>(userEntyti);
+            var userEntities = await _messagerDbContext.Users.Include(c => c.ChatUsers).ThenInclude(m=>m.Messages).ToListAsync();
+            return _mapper.Map<List<User>>(userEntities);
         }
 
         public async Task<User> GetByIdAsync(Guid id)
         {
-            var userEntity = await _messagerDbContext.Users.FindAsync(id);
-            return _mapper.Map<User>(userEntity);
+            var userEntity = await _messagerDbContext.Users.
+                Include(c => c.ChatUsers)
+                .ThenInclude(m => m.Messages)
+                .Include(c => c.ChatUsers)
+                .ThenInclude(u=>u.Users).FirstOrDefaultAsync(i=>i.Id==id);
+            return userEntity == null ? null : _mapper.Map<User>(userEntity);
+        }
+        public async Task<User> GetByEmail(string email)
+        {
+            var userEntity = await _messagerDbContext.Users.FirstOrDefaultAsync(i => i.Email == email);
+            return userEntity == null ? null : _mapper.Map<User>(userEntity);
         }
 
         public async Task SaveAsync()
@@ -55,15 +59,16 @@ namespace MyMessagerWork.DataAcess.Repositories
         public async Task<Guid> Update(User entity)
         {
             var userEntity = _mapper.Map<UserEntity>(entity);
-            await _messagerDbContext.Users.ExecuteUpdateAsync(s=>s
-            .SetProperty(b=>b.Id, b=> userEntity.Id)
-            .SetProperty(b => b.Name, b => userEntity.Name)
-            .SetProperty(b => b.Email, b => userEntity.Email)
-            .SetProperty(b => b.PictureUserPath, b => userEntity.PictureUserPath)
-            .SetProperty(b => b.HashPassword, b => userEntity.HashPassword)
-            .SetProperty(b=>b.ChatUsers, b=>entity.ChatUsers.Select(s => _mapper.Map<ChatEntity>(s)) )
+            await _messagerDbContext.Users.ExecuteUpdateAsync(s => s
+                .SetProperty(b => b.Id, b => userEntity.Id)
+                .SetProperty(b => b.Name, b => userEntity.Name)
+                .SetProperty(b => b.Email, b => userEntity.Email)
+                .SetProperty(b => b.PictureUserPath, b => userEntity.PictureUserPath)
+                .SetProperty(b => b.HashPassword, b => userEntity.HashPassword)
+                .SetProperty(b => b.ChatUsers, b => userEntity.ChatUsers)
             );
             return entity.Id;
         }
     }
+
 }

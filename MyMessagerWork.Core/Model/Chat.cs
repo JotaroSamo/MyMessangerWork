@@ -10,6 +10,7 @@ namespace MyMessagerWork.Core.Model
     public class Chat
     {
         public const int MAX_LENGHT_NAME = 250;
+
         private Chat(Guid id, string name, string hub, ICollection<User> users, DateTime createAt, DateTime updateAt, ICollection<Message> messages = default, string? pictureChatPath = default)
         {
             Id = id;
@@ -17,8 +18,8 @@ namespace MyMessagerWork.Core.Model
             Hub = hub;
             CreatedAt = createAt;
             UpdatedAt = updateAt;
-            Users = users;
-            Messages = messages;
+            Users = users ?? new List<User>();
+            Messages = messages ?? new List<Message>();
             PictureChatPath = pictureChatPath;
         }
 
@@ -33,7 +34,7 @@ namespace MyMessagerWork.Core.Model
 
         public static Result<Chat> Create(Guid id, string name, string hub, ICollection<User> users, DateTime createAt, DateTime updateAt, ICollection<Message> messages = default, string? pictureChatPath = default)
         {
-            if (string.IsNullOrEmpty(name) || name.Length > 250)
+            if (string.IsNullOrEmpty(name) || name.Length > MAX_LENGHT_NAME)
             {
                 return Result.Failure<Chat>($"Name is null or length > {MAX_LENGHT_NAME} symbols");
             }
@@ -45,8 +46,10 @@ namespace MyMessagerWork.Core.Model
             {
                 return Result.Failure<Chat>($"USERS IS NULL");
             }
+
             var chat = new Chat(id, name, hub, users, createAt, updateAt, messages, pictureChatPath);
             return Result.Success(chat);
         }
     }
+
 }

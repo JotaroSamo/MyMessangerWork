@@ -1,6 +1,8 @@
-﻿namespace MyMessagerWork.Contracts
+﻿using Microsoft.AspNetCore.Http;
+
+namespace MyMessagerWork.Contracts
 {
-    public record UserRequest(string name, string email, string password)
+    public record UserRequest(string name, string email, string password, IFormFile File)
     {
     }
 }

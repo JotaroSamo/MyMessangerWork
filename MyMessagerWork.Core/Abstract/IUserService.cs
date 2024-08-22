@@ -14,6 +14,7 @@ namespace MyMessagerWork.Core.Abstract
         Task<List<User>> GetAllListUserAsync();
         Task<User> GetByIdUserAsync(Guid id);
         Task<Guid> UpdateUser(User entity);
+        Task<User> GetByEmailUser(string email);
         //Task<IQueryable<User>> AsQueryable();
         Task SaveAsyncUser();
     }

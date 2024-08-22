@@ -11,11 +11,11 @@ builder.Services.AddDbContext<MessagerDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SQLConnection"),
         b => b.MigrationsAssembly("MyMessagerWork")));
 builder.Services.AddControllers();
-builder.Services.AddAutoMapper(typeof(MapperCoreDB));
+builder.Services.AddAutoMapper(typeof(DomainProfile));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-//builder.Services.AddScoped<IUserService, UserService>();
-//builder.Services.AddScoped<IRepositoryUser, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IRepositoryUser, UserRepository>();
 
 var app = builder.Build();
 

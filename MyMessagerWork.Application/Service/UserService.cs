@@ -36,6 +36,11 @@ namespace MyMessagerWork.Application.Service
            return await _repository.GetAllListAsync();
         }
 
+        public async Task<User> GetByEmailUser(string email)
+        {
+           return await _repository.GetByEmail(email);
+        }
+
         public async Task<User> GetByIdUserAsync(Guid id)
         {
           return await _repository.GetByIdAsync(id);

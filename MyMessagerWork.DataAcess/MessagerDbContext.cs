@@ -18,7 +18,7 @@ namespace MyMessagerWork.DataAcess
         }
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<MessageEntity> Messages { get; set; }
-        //public DbSet<ChatUserEntity> ChatUserEntities { get; set; }
+        public DbSet<AttachmentEntity> Attachments { get; set; }
         public DbSet<ChatEntity> Chats { get; set; }
     }
 }

@@ -9,6 +9,7 @@ namespace MyMessagerWork.DataAcess.Repositories
         Task<List<User>> GetAllListAsync();
         Task<User> GetByIdAsync(Guid id);
         Task<Guid> Update(User entity);
+        Task<User> GetByEmail(string email);
         //Task<IQueryable<User>> AsQueryable();
         Task SaveAsync();
     }

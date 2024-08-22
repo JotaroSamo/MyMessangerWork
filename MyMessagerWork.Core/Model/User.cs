@@ -9,13 +9,13 @@ namespace MyMessagerWork.Core.Model
 {
     public class User
     {
-        private User(Guid id, string name, string email, string hashPassword, string pictureUserPatch = default, ICollection<ChatUser> chatusers = default)
+        private User(Guid id, string name, string email, string hashPassword, string pictureUserPatch = default, ICollection<Chat> chatusers = default)
         {
             Id = id;
             Name = name;
             Email = email;
             HashPassword = hashPassword;
-            ChatUsers = chatusers;
+            ChatUsers = chatusers ?? new List<Chat>();
             PictureUserPath = pictureUserPatch;
         }
 
@@ -23,10 +23,10 @@ namespace MyMessagerWork.Core.Model
         public string Name { get; }
         public string Email { get; }
         public string? PictureUserPath { get; }
-        public ICollection<ChatUser>? ChatUsers { get; }
+        public ICollection<Chat> ChatUsers { get; }
         public string HashPassword { get; }
 
-        public static Result<User> Create(Guid id, string name, string email, string hashPassword, string pictureUserPatch = default, ICollection<ChatUser> chatusers = default)
+        public static Result<User> Create(Guid id, string name, string email, string hashPassword, string pictureUserPatch = default, ICollection<Chat> chatusers = default)
         {
             if (string.IsNullOrEmpty(name) || name.Length > Chat.MAX_LENGHT_NAME)
             {
@@ -36,10 +36,10 @@ namespace MyMessagerWork.Core.Model
             {
                 return Result.Failure<User>($"The {nameof(email)} is null or length more than {Chat.MAX_LENGHT_NAME} symbols");
             }
+
             var user = new User(id, name, email, hashPassword, pictureUserPatch, chatusers);
             return Result.Success(user);
         }
     }
-
 }
 
