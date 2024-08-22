@@ -4,6 +4,7 @@ using MyMessagerWork.Core.Abstract;
 using MyMessagerWork.DataAcess;
 using MyMessagerWork.DataAcess.Mapper;
 using MyMessagerWork.DataAcess.Repositories;
+using MyMessagerWork.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -16,6 +17,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 var app = builder.Build();
 

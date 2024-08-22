@@ -34,8 +34,8 @@ namespace MyMessagerWork.DataAcess.Repositories
             var messageEntity = _messagerDbContext.Messages.
                 AsQueryable()
                 .Include(a => a.Attachments).Where(i => i.ChatId == chatid).ToListAsync();
-            var message = _mapper.Map<List<Message>>(messageEntity);
-            return message;
+        
+            return messageEntity ==null? null : _mapper.Map<List<Message>>(messageEntity);
         }
         public async Task<Guid> DeleteAsync(Guid id)
         {

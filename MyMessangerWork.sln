@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyMessagerWork.Core", "MyMe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyMessagerWork.Application", "MyMessagerWork.Application\MyMessagerWork.Application.csproj", "{C168F6FA-1D01-486C-9525-74125EE616DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMessagerWork.Infrastructure", "MyMessagerWork.Infrastructure\MyMessagerWork.Infrastructure.csproj", "{594F1CF0-FBBE-4339-B7B5-C3932D8BD1B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{C168F6FA-1D01-486C-9525-74125EE616DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C168F6FA-1D01-486C-9525-74125EE616DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C168F6FA-1D01-486C-9525-74125EE616DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{594F1CF0-FBBE-4339-B7B5-C3932D8BD1B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{594F1CF0-FBBE-4339-B7B5-C3932D8BD1B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{594F1CF0-FBBE-4339-B7B5-C3932D8BD1B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{594F1CF0-FBBE-4339-B7B5-C3932D8BD1B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

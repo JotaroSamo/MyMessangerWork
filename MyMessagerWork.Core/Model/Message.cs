@@ -29,7 +29,7 @@ namespace MyMessagerWork.Core.Model
         public Guid UserId { get; }
         public User User { get; }
         public Guid ChatId { get; }
-        public IReadOnlyCollection<Attachment> Attachments { get; }
+        public ICollection<Attachment> Attachments { get; }
 
         public static Result<Message> Create(Guid id, User sender, Guid chatId, string? text, List<Attachment> attachments = null)
         {
