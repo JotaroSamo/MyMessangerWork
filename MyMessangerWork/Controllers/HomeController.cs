@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CSharpFunctionalExtensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyMessagerWork.Contracts;
 using MyMessagerWork.Core.Abstract;
+using MyMessagerWork.Core.Model;
 
 namespace MyMessagerWork.Controllers
 {
@@ -11,41 +13,29 @@ namespace MyMessagerWork.Controllers
     {
         private readonly IUserService _userService;
 
-        private readonly IPasswordHasher _passwordHasher;
+    
 
-        public HomeController(IUserService userService, IPasswordHasher passwordHasher)
+        public HomeController(IUserService userService)
         {
             _userService = userService;
-            _passwordHasher = passwordHasher;
+  
         }
-        //[HttpGet]
-        //public IActionResult Index()
-        //{
-        //    return Ok();
-        //}
+       
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody]UserRequest userRequest)
         {
-
-            var hashedpassword = _passwordHasher.Generate(userRequest.password);
-            var user = MyMessagerWork.Core.Model.User.Create(Guid.NewGuid(), userRequest.name, userRequest.email, hashedpassword/*, filePath*/);
-            await _userService.AddAsyncUser(user.Value);
+            var user = await _userService.Register(userRequest.name, userRequest.email, userRequest.password);
             return Ok(user.Value.Id);
         }
+
         [HttpPost("Login")]
         public async Task<IActionResult> Login(string email,string password)
         {
-            var user = await _userService.GetByEmailUser(email);
-            if (user == null)
-            {
-                return BadRequest();
-            }
-            if (_passwordHasher.Verify(password, user.HashPassword))
-            {
-                return Ok(user);
-            }
-            return BadRequest();
-
+          var token = await _userService.Login(email, password);
+           
+          Response.Cookies.Append("tasty-cookies", token.Value);
+            
+          return Ok(token.Value);
         }
         [HttpPost("GetUser")]
         public async Task<IActionResult> GetUser([FromBody] string email)
@@ -57,10 +47,6 @@ namespace MyMessagerWork.Controllers
             } 
             return Ok(user);
         }
-        //[HttpGet]
-        //public IActionResult Login()
-        //{
-        //    return Ok();
-        //}
+       
     }
 }
