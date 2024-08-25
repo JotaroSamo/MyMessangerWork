@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using MyMessagerWork.Application.Service;
 using MyMessagerWork.Infrastructure;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -36,21 +38,24 @@ namespace MyMessagerWork.Extensions
             }
         };
     });
+            services.AddScoped<IPermissionService, PermissionService>();
+            services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("AdminPolicy", policy =>
-                    {
+                //options.AddPolicy("AdminPolicy", policy =>
+                //    {
 
-                        policy.RequireClaim("Admin", "true");
-                    }
-                );
+                //        policy.RequireClaim("Admin", "true");
+                //    }
+                //);
 
-                options.AddPolicy("UserPolicy", policy =>
-                {
+                //options.AddPolicy("UserPolicy", policy =>
+                //{
 
-                    policy.RequireClaim("User", "true");
-                }
-                );
+                //    policy.RequireClaim("User", "true");
+                //}
+                //);
             });
     }
  }

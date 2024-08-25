@@ -12,8 +12,8 @@ using MyMessagerWork.DataAcess;
 namespace MyMessagerWork.Migrations
 {
     [DbContext(typeof(MessagerDbContext))]
-    [Migration("20240825101312_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240825122814_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -133,6 +133,28 @@ namespace MyMessagerWork.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PermissionEntity");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Read"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Create"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Update"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Delete"
+                        });
                 });
 
             modelBuilder.Entity("MyMessagerWork.DataAcess.Entity.RoleEntity", b =>
@@ -147,14 +169,21 @@ namespace MyMessagerWork.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("UserEntityId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserEntityId");
-
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "User"
+                        });
                 });
 
             modelBuilder.Entity("MyMessagerWork.DataAcess.Entity.RolePermissionEntity", b =>
@@ -166,6 +195,8 @@ namespace MyMessagerWork.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("RoleId", "PermissionId");
+
+                    b.HasIndex("PermissionId");
 
                     b.ToTable("RolePermissionEntity");
                 });
@@ -196,19 +227,19 @@ namespace MyMessagerWork.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("PermissionEntityRoleEntity", b =>
+            modelBuilder.Entity("MyMessagerWork.DataAcess.Entity.UserRoleEntity", b =>
                 {
-                    b.Property<int>("PermissionsId")
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RolesId")
-                        .HasColumnType("int");
+                    b.HasKey("UserId", "RoleId");
 
-                    b.HasKey("PermissionsId", "RolesId");
+                    b.HasIndex("RoleId");
 
-                    b.HasIndex("RolesId");
-
-                    b.ToTable("PermissionEntityRoleEntity");
+                    b.ToTable("UserRoleEntity");
                 });
 
             modelBuilder.Entity("ChatEntityUserEntity", b =>
@@ -252,24 +283,32 @@ namespace MyMessagerWork.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("MyMessagerWork.DataAcess.Entity.RoleEntity", b =>
-                {
-                    b.HasOne("MyMessagerWork.DataAcess.Entity.UserEntity", null)
-                        .WithMany("Roles")
-                        .HasForeignKey("UserEntityId");
-                });
-
-            modelBuilder.Entity("PermissionEntityRoleEntity", b =>
+            modelBuilder.Entity("MyMessagerWork.DataAcess.Entity.RolePermissionEntity", b =>
                 {
                     b.HasOne("MyMessagerWork.DataAcess.Entity.PermissionEntity", null)
                         .WithMany()
-                        .HasForeignKey("PermissionsId")
+                        .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MyMessagerWork.DataAcess.Entity.RoleEntity", null)
                         .WithMany()
-                        .HasForeignKey("RolesId")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MyMessagerWork.DataAcess.Entity.UserRoleEntity", b =>
+                {
+                    b.HasOne("MyMessagerWork.DataAcess.Entity.RoleEntity", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyMessagerWork.DataAcess.Entity.UserEntity", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -282,11 +321,6 @@ namespace MyMessagerWork.Migrations
             modelBuilder.Entity("MyMessagerWork.DataAcess.Entity.MessageEntity", b =>
                 {
                     b.Navigation("Attachments");
-                });
-
-            modelBuilder.Entity("MyMessagerWork.DataAcess.Entity.UserEntity", b =>
-                {
-                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }

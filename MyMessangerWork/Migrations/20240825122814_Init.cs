@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace MyMessagerWork.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -41,15 +43,16 @@ namespace MyMessagerWork.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RolePermissionEntity",
+                name: "Roles",
                 columns: table => new
                 {
-                    RoleId = table.Column<int>(type: "int", nullable: false),
-                    PermissionId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RolePermissionEntity", x => new { x.RoleId, x.PermissionId });
+                    table.PrimaryKey("PK_Roles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -65,6 +68,30 @@ namespace MyMessagerWork.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RolePermissionEntity",
+                columns: table => new
+                {
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    PermissionId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RolePermissionEntity", x => new { x.RoleId, x.PermissionId });
+                    table.ForeignKey(
+                        name: "FK_RolePermissionEntity_PermissionEntity_PermissionId",
+                        column: x => x.PermissionId,
+                        principalTable: "PermissionEntity",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RolePermissionEntity_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -119,22 +146,27 @@ namespace MyMessagerWork.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Roles",
+                name: "UserRoleEntity",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserEntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Roles", x => x.Id);
+                    table.PrimaryKey("PK_UserRoleEntity", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
-                        name: "FK_Roles_Users_UserEntityId",
-                        column: x => x.UserEntityId,
+                        name: "FK_UserRoleEntity_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserRoleEntity_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -156,28 +188,24 @@ namespace MyMessagerWork.Migrations
                         principalColumn: "Id");
                 });
 
-            migrationBuilder.CreateTable(
-                name: "PermissionEntityRoleEntity",
-                columns: table => new
+            migrationBuilder.InsertData(
+                table: "PermissionEntity",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
                 {
-                    PermissionsId = table.Column<int>(type: "int", nullable: false),
-                    RolesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
+                    { 1, "Read" },
+                    { 2, "Create" },
+                    { 3, "Update" },
+                    { 4, "Delete" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
                 {
-                    table.PrimaryKey("PK_PermissionEntityRoleEntity", x => new { x.PermissionsId, x.RolesId });
-                    table.ForeignKey(
-                        name: "FK_PermissionEntityRoleEntity_PermissionEntity_PermissionsId",
-                        column: x => x.PermissionsId,
-                        principalTable: "PermissionEntity",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PermissionEntityRoleEntity_Roles_RolesId",
-                        column: x => x.RolesId,
-                        principalTable: "Roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    { 1, "Admin" },
+                    { 2, "User" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -201,14 +229,14 @@ namespace MyMessagerWork.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PermissionEntityRoleEntity_RolesId",
-                table: "PermissionEntityRoleEntity",
-                column: "RolesId");
+                name: "IX_RolePermissionEntity_PermissionId",
+                table: "RolePermissionEntity",
+                column: "PermissionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Roles_UserEntityId",
-                table: "Roles",
-                column: "UserEntityId");
+                name: "IX_UserRoleEntity_RoleId",
+                table: "UserRoleEntity",
+                column: "RoleId");
         }
 
         /// <inheritdoc />
@@ -221,10 +249,10 @@ namespace MyMessagerWork.Migrations
                 name: "ChatEntityUserEntity");
 
             migrationBuilder.DropTable(
-                name: "PermissionEntityRoleEntity");
+                name: "RolePermissionEntity");
 
             migrationBuilder.DropTable(
-                name: "RolePermissionEntity");
+                name: "UserRoleEntity");
 
             migrationBuilder.DropTable(
                 name: "Messages");

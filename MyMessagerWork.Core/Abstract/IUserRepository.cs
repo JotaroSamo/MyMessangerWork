@@ -1,4 +1,6 @@
-﻿using MyMessagerWork.Core.Model;
+﻿using MyMessagerWork.Core.Enums;
+using MyMessagerWork.Core.Model;
+using System;
 
 namespace MyMessagerWork.DataAcess.Repositories
 {
@@ -11,6 +13,7 @@ namespace MyMessagerWork.DataAcess.Repositories
         Task<Guid> Update(User entity);
         Task<User> GetByEmail(string email);
         //Task<IQueryable<User>> AsQueryable();
+        Task<HashSet<Permission>> GetUserPermissions(Guid userId);
         Task SaveAsync();
     }
 }

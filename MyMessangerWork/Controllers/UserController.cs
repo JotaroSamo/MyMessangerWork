@@ -4,7 +4,7 @@ using MyMessagerWork.Core.Abstract;
 
 namespace MyMessagerWork.Controllers
 {
-    [Authorize(Policy ="UserPolicy")]
+    [Authorize]
     [Controller]
     [Route("api/[controller]")]
     public class UserController : Controller
