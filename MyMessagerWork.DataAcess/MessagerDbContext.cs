@@ -18,8 +18,9 @@ namespace MyMessagerWork.DataAcess
 
         public MessagerDbContext(DbContextOptions<MessagerDbContext> options, IOptions<AuthorizationOptions> authOptions) :base(options)
         {
-            Database.EnsureCreated();
+          
             this.authOptions = authOptions;
+            Database.EnsureCreated();
         }
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<MessageEntity> Messages { get; set; }

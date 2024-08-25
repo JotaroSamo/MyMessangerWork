@@ -17,7 +17,7 @@ namespace MyMessagerWork.DataAcess.Configurations
     {
         private readonly AuthorizationOptions _authorization;
 
-        public RolePermissionConfiguration(AuthorizationOptions authorization)
+        public RolePermissionConfiguration( AuthorizationOptions authorization)
         {
             _authorization = authorization;
         }
@@ -31,14 +31,17 @@ namespace MyMessagerWork.DataAcess.Configurations
 
         private RolePermissionEntity[] ParseRolePermissions()
         {
-            return _authorization.RolePermissions
+            var rolepermisions = _authorization.RolePermissions
             .SelectMany(rp => rp.Permissions
             .Select(p => new RolePermissionEntity
             {
-                        RoleId = (int)Enum.Parse<Role>(rp.Role),
-                        PermissionId = (int)Enum.Parse<Permission>(p)
-                    }))
+                RoleId = (int)Enum.Parse<Role>(rp.Role),
+                PermissionId = (int)Enum.Parse<Permission>(p)
+            }))
                     .ToArray();
+
+            return rolepermisions;
         }
+           
     }
 }

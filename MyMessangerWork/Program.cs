@@ -15,19 +15,20 @@ using static CSharpFunctionalExtensions.Result;
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.Configure<AuthorizationOptions>(builder.Configuration.GetSection(nameof(AuthorizationOptions)));
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(nameof(JwtOptions)));
 builder.Services.AddDbContext<MessagerDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SQLConnection"),
-        b => b.MigrationsAssembly("MyMessagerWork.DataAñces")));
-builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(nameof(JwtOptions)));
+        b => b.MigrationsAssembly("MyMessagerWork")));
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddApiAuthentication(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(typeof(DomainProfile));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
-builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+
 
 
 var app = builder.Build();

@@ -12,6 +12,6 @@ namespace MyMessagerWork.DataAcess.Entity
         public string Name { get; set; }
 
         public ICollection<PermissionEntity> Permissions { get; set; } = [];
-        ICollection<UserEntity> Users { get; set; } = [];
+        public ICollection<UserEntity> Users { get; set; } = [];
     }
 }
