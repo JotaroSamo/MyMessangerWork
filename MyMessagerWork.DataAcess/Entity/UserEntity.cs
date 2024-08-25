@@ -14,6 +14,8 @@ namespace MyMessagerWork.DataAcess.Entity
         public string? PictureUserPath { get; set; }
         public string HashPassword { get; set; }
         public ICollection<ChatEntity> ChatUsers { get; set; }
+        public ICollection<RoleEntity> Roles { get; set; }
+
     }
 
 }
